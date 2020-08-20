@@ -1,5 +1,10 @@
 # Initiate
-### Version 3
+
+### Version 3.1
+
+Added Sass linting
+
+### Version 3.0
 
 Project startup which includes:
 
