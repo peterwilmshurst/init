@@ -7,6 +7,7 @@ import babel from "gulp-babel";
 import imagemin from "gulp-imagemin";
 import browserSync from "browser-sync";
 import include from "gulp-include";
+import replace from 'gulp-replace';
 import del from "del";
 
 
@@ -57,6 +58,13 @@ function clean() {
     return del(['dist/**/*']);
 };
 
+function cachebust (){
+    let cbString = new Date().getTime();
+    return gulp.src(['./dist/**/*.html'])
+        .pipe(replace(/cb=\d+/g, 'cb=' + cbString))
+        .pipe(gulp.dest('./dist/'));
+};
+
 gulp.task('serve', () => {
     browserSync.init({
         server: {
@@ -81,9 +89,15 @@ gulp.task('sasslint', sasslint);
 gulp.task('js', js);
 gulp.task('css', css);
 gulp.task('img', img);
+gulp.task('cachebust', cachebust);
 
 // watch task
 gulp.task('default', gulp.series('serve'));
 
 // deploy task
-gulp.task('deploy', gulp.parallel(html, js, sasslint, css, img));
+gulp.task('deploy', 
+gulp.series(
+    gulp.parallel(html, js, css, img),
+    cachebust
+)
+);

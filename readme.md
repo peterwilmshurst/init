@@ -1,5 +1,9 @@
 # Initiate
 
+### Version 3.2
+
+Added cachebuster task
+
 ### Version 3.1
 
 Added Sass linting
